@@ -156,8 +156,7 @@ public class CityConnect {
 		case INVALID:
 			return getInvalidResponse(userCommand);
 		case EXIT:
-			checkDiff();
-			System.exit(0);
+			handleExit();
 		default:
 			//throw an error if the command is not recognized
 			throw new Error("Unrecognized command type");
@@ -168,6 +167,11 @@ public class CityConnect {
 		 * That is why we use an Error instead of an Exception.
 		 * ====================================================================
 		 */
+	}
+
+	private static void handleExit() {
+		checkDiff();
+		System.exit(0);
 	}
 
 	private static String getInvalidResponse(String userCommand) {
