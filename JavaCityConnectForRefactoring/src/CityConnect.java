@@ -52,6 +52,7 @@ public class CityConnect {
 	private static final String WELCOME_MESSAGE = "Welcome to SimpleRouteStore!";
 	private static final String MESSAGE_NO_SPACE = "No more space to store locations";
 	private static final String MESSAGE_ENTER_COMMAND = "Enter command:";
+	private static final String MESSAGE_UNRECOGNIZED_COMMAND_TYPE = "Unrecognized command type";
 
 	// These are the possible command types
 	enum COMMAND_TYPE {
@@ -160,7 +161,7 @@ public class CityConnect {
 			handleExit();
 		default:
 			//throw an error if the command is not recognized
-			throw new Error("Unrecognized command type");
+			throw new Error(MESSAGE_UNRECOGNIZED_COMMAND_TYPE);
 		}
 		/*
 		 * ==============NOTE TO STUDENTS======================================
