@@ -195,14 +195,18 @@ public class CityConnect {
 	 *            is the first word of the user command
 	 */
 	private static COMMAND_TYPE determineCommandType(String commandTypeString) {
-		if (commandTypeString.equalsIgnoreCase("addroute")) {
-			return COMMAND_TYPE.ADD_ROUTE;
-		} else if (commandTypeString.equalsIgnoreCase("getdistance")) {
-			return COMMAND_TYPE.GET_DISTANCE;
-		} else if (commandTypeString.equalsIgnoreCase("exit")) {
-		 	return COMMAND_TYPE.EXIT;
-		} else {
-			return COMMAND_TYPE.INVALID;
+		switch (commandTypeString.toLowerCase()) {
+			case "addroute" :
+				return COMMAND_TYPE.ADD_ROUTE;
+				
+			case "getdistance" :
+				return COMMAND_TYPE.GET_DISTANCE;
+				
+			case "exit" :
+			 	return COMMAND_TYPE.EXIT;
+			 	
+			default :
+				return COMMAND_TYPE.INVALID;
 		}
 	}
 
