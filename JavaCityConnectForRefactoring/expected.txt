@@ -1,0 +1,38 @@
+Welcome to SimpleRouteStore!
+Enter command:invalid command format :abcd
+Enter command:invalid command format :
+Enter command:No route exists from aaa to bbb!
+Enter command:Route from aaa to bbb with distance 23km added
+Enter command:Distance from aaa to bbb is 23
+Enter command:Distance from bbb to aaa is 23
+Enter command:Distance from aaa to bbb is 23
+Enter command:Route from bbb to ccc with distance 12km added
+Enter command:Distance from bbb to ccc is 12
+Enter command:Distance from aaa to bbb is 23
+Enter command:Route from aaa to bbb with distance 99km added
+Enter command:Distance from aaa to bbb is 99
+Enter command:No route exists from ddd to eee!
+Enter command:No route exists from aaa to ccc!
+Enter command:invalid command format :getdistance
+Enter command:invalid command format :getdistance aaa
+Enter command:invalid command format :addroute aaa bbb
+Enter command:invalid command format :addroute aaa
+Enter command:invalid command format :addroute
+Enter command:Route from aaa to bbb with distance 23km added
+Enter command:Route from Aaa to Bbb with distance 11km added
+Enter command:Distance from AAA to BBB is 11
+Enter command:invalid command format :addroute xxx y five
+Enter command:invalid command format :addroute xxx y 5.0
+Enter command:invalid command format :addroute xxx y 10i
+Enter command:invalid command format :addroute xxx y 0
+Enter command:Route from x to x with distance 18km added
+Enter command:Route from 5mk89he to $jjk&!~ with distance 5km added
+Enter command:Route from a1 to b1 with distance 1km added
+Enter command:Route from a2 to b2 with distance 9km added
+Enter command:Route from a3 to b3 with distance 3km added
+Enter command:Route from a4 to b4 with distance 4km added
+Enter command:Route from a5 to b5 with distance 6km added
+Enter command:Route from a6 to b6 with distance 8km added
+Enter command:Route from a6 to b6 with distance 18km added
+Enter command:No more space to store locations
+Enter command:

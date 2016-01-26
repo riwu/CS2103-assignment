@@ -1,0 +1,37 @@
+abcd
+
+getdistance aaa bbb
+addroute aaa bbb 23
+getdistance aaa bbb
+getdistance bbb aaa
+  getdistance  	 aaa  bbb 
+addroute bbb ccc 12
+getdistance bbb ccc
+getdistance aaa bbb
+addroute aaa bbb 99
+getdistance aaa bbb
+getdistance ddd eee
+getdistance aaa ccc
+getdistance
+getdistance aaa
+addroute aaa bbb
+addroute aaa
+addroute
+addroute aaa bbb 23 56d
+addroute Aaa Bbb 11
+getdistance AAA BBB
+addroute xxx y five
+addroute xxx y 5.0
+addroute xxx y 10i
+addroute xxx y 0
+addroute x x 18
+addroute 5mk89he $jjk&!~ 5
+addroute a1 b1 1
+addroute a2 b2 9
+addroute a3 b3 3
+addroute a4 b4 4
+addroute a5 b5 6
+addroute a6 b6 8
+addroute a6 b6 18
+addroute a11 b11 23
+exit

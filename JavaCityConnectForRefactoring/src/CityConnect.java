@@ -7,6 +7,7 @@
  */
 
 import java.util.Scanner;
+import java.io.*;
 /**
  * This class is used to store and retrieve the distance between various locations 
  * A route is assumed to be bidirectional. i.e., a route from CityA to CityB is 
@@ -120,6 +121,20 @@ public class CityConnect {
 		System.out.println(text);
 	}
 
+	private static void checkDiff() {
+		try {
+			BufferedReader bufferedReader1 = new BufferedReader(new FileReader("expected.txt"));
+            BufferedReader bufferedReader2 = new BufferedReader(new FileReader("out.txt"));
+            String line, content1 = "", content2 = "";
+            while((line = bufferedReader1.readLine()) != null) content1 += line;
+            while((line = bufferedReader2.readLine()) != null) content2 += line;
+	        bufferedReader1.close(); 
+	        bufferedReader2.close(); 
+			System.out.println("Same: " + content1.equals(content2));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	public static String executeCommand(String userCommand) {
 		if (userCommand.trim().equals(""))
 			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
@@ -136,6 +151,7 @@ public class CityConnect {
 		case INVALID:
 			return String.format(MESSAGE_INVALID_FORMAT, userCommand);
 		case EXIT:
+			checkDiff();
 			System.exit(0);
 		default:
 			//throw an error if the command is not recognized
