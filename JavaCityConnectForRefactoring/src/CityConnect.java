@@ -116,8 +116,7 @@ public class CityConnect {
 
 	private static String getNextCommand() {
 		System.out.print(MESSAGE_ENTER_COMMAND);
-		String command = scanner.nextLine();
-		return command;
+		return scanner.nextLine();
 	}
 
 	/*
@@ -152,17 +151,25 @@ public class CityConnect {
 		COMMAND_TYPE commandType = determineCommandType(commandTypeString);
 
 		switch (commandType) {
-		case ADD_ROUTE:
-			return addRoute(userCommand);
-		case GET_DISTANCE:
-			return getDistance(userCommand);
-		case INVALID:
-			return getInvalidResponse(userCommand);
-		case EXIT:
-			handleExit();
-		default:
-			//throw an error if the command is not recognized
-			throw new Error(MESSAGE_UNRECOGNIZED_COMMAND_TYPE);
+			case ADD_ROUTE:
+				return addRoute(userCommand);
+				//Fallthrough
+				
+			case GET_DISTANCE:
+				return getDistance(userCommand);
+				//Fallthrough
+				
+			case INVALID:
+				return getInvalidResponse(userCommand);
+				//Fallthrough
+
+			case EXIT:
+				handleExit();
+				//Fallthrough
+			
+			default:
+				//throw an error if the command is not recognized
+				throw new Error(MESSAGE_UNRECOGNIZED_COMMAND_TYPE);
 		}
 		/*
 		 * ==============NOTE TO STUDENTS======================================
