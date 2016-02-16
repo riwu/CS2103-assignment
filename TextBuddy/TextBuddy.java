@@ -117,18 +117,31 @@ public class TextBuddy {
 			String userCommand = getNextCommand();
 			executeCommand(userCommand);
 		}
-	}
+	}	
 
 	private String getNextCommand() {
 		showToUser(MESSAGE_ENTER_COMMAND);
-		return _scanner.next();
-
+		return getUserInput();
+	}
+	
+	private String getUserInput() {
+		return _scanner.nextLine();
+	}
+	
+	private String[] splitCommand(String userInput) {
+		Scanner scanner = new Scanner(userInput + "\n");
+		String[] commands = new String[]{scanner.next(), scanner.nextLine().trim()};
+		scanner.close();
+		return commands;
 	}
 
-	private void executeCommand(String command) {
+	public void executeCommand(String userInput) {
+		String[] commands = splitCommand(userInput);
+		String command = commands[0];
+		String parameters = commands[1];
 		switch (command.toLowerCase()) {
 			case COMMAND_ADD :
-				addPhrase();
+				addPhrase(parameters);
 				break;
 
 			case COMMAND_DISPLAY :
@@ -136,7 +149,7 @@ public class TextBuddy {
 				break;
 
 			case COMMAND_DELETE :
-				deletePhrase();
+				deletePhrase(parameters);
 				break;
 
 			case COMMAND_CLEAR :
@@ -156,8 +169,7 @@ public class TextBuddy {
 		}
 	}
 
-	private void addPhrase() {
-		String phrase = _scanner.nextLine().trim();
+	private void addPhrase(String phrase) {
 		_phrases.add(phrase);
 		showToUser(String.format(MESSAGE_PHRASE_ADDED, _fileName, phrase));
 	}
@@ -172,8 +184,8 @@ public class TextBuddy {
 		}
 	}
 
-	private void deletePhrase() {
-		int index = getIndex();
+	private void deletePhrase(String indexStr) {
+		int index = getIndex(indexStr);
 		deletePhraseAtIndex(index);
 	}
 
@@ -182,13 +194,12 @@ public class TextBuddy {
 	 * 
 	 * @return    index of list element to be removed, -1 if invalid index
 	 */
-	private int getIndex() {
-		int index = getUserInputIndex();
+	private int getIndex(String indexStr) {
+		int index = getUserInputIndex(indexStr);
 		return (isIndexValid(index)) ? (index - LIST_NUMBERING_OFFSET) : -1;
 	}
 
-	private int getUserInputIndex() {
-		String indexStr = _scanner.next();
+	private int getUserInputIndex(String indexStr) {
 		return (indexStr.matches("\\d")) ? Integer.parseInt(indexStr) : -1;
 	}
 
