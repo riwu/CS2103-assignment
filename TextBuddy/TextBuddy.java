@@ -1,3 +1,4 @@
+
 /**
  * This class manipulates text in a file. 
  * Extra command: save -- saves to content to file.
@@ -40,10 +41,16 @@ public class TextBuddy {
 
 	private static final String MESSAGE_INVALID_INDEX = "Invalid index\n";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %1$s\n";
-	
-	/** Offset to be subtracted from user input to get correct list index, which starts at 0 */
+
+	private static final String COMMAND_EXIT = "exit";
+	private static final String COMMAND_SAVE = "save";
+	private static final String COMMAND_CLEAR = "clear";
+	private static final String COMMAND_DELETE = "delete";
+	private static final String COMMAND_DISPLAY = "display";
+	private static final String COMMAND_ADD = "add";
+
 	private static final int LIST_NUMBERING_OFFSET = 1;
-	
+
 	private List<String> _phrases = new LinkedList<String>();
 	private String _fileName;
 	private Scanner _scanner = new Scanner(System.in);
@@ -115,35 +122,36 @@ public class TextBuddy {
 	private String getNextCommand() {
 		showToUser(MESSAGE_ENTER_COMMAND);
 		return _scanner.next();
+
 	}
 
 	private void executeCommand(String command) {
 		switch (command.toLowerCase()) {
-			case "add" :
+			case COMMAND_ADD :
 				addPhrase();
 				break;
-	
-			case "display" :
+
+			case COMMAND_DISPLAY :
 				displayPhrases();
 				break;
-	
-			case "delete" :
+
+			case COMMAND_DELETE :
 				deletePhrase();
 				break;
-	
-			case "clear" :
+
+			case COMMAND_CLEAR :
 				clearItems();
 				break;
-	
-			case "save" :
+
+			case COMMAND_SAVE :
 				saveToFileWithFeedback();
 				break;
-	
-			case "exit" :
+
+			case COMMAND_EXIT :
 				saveToFileAndExit();
 				break;
-	
-			default:
+
+			default :
 				printInvalidCommand(command);
 		}
 	}
@@ -160,8 +168,7 @@ public class TextBuddy {
 			return;
 		}
 		for (int i = 0; i < _phrases.size(); i++) {
-			showToUser(String.format(MESSAGE_PHRASE_DISPLAY, 
-									 i + LIST_NUMBERING_OFFSET, _phrases.get(i)));
+			showToUser(String.format(MESSAGE_PHRASE_DISPLAY, i + LIST_NUMBERING_OFFSET, _phrases.get(i)));
 		}
 	}
 
@@ -169,30 +176,30 @@ public class TextBuddy {
 		int index = getIndex();
 		deletePhraseAtIndex(index);
 	}
-	
+
 	/**
 	 * Get index to be removed from list from user input
 	 * 
-	 * @return     index of list element to be removed, -1 if invalid index
+	 * @return    index of list element to be removed, -1 if invalid index
 	 */
 	private int getIndex() {
 		int index = getUserInputIndex();
 		return (isIndexValid(index)) ? (index - LIST_NUMBERING_OFFSET) : -1;
 	}
-	
+
 	private int getUserInputIndex() {
 		String indexStr = _scanner.next();
-		return (indexStr.matches("\\d")) ? Integer.parseInt(indexStr) : -1; 
+		return (indexStr.matches("\\d")) ? Integer.parseInt(indexStr) : -1;
 	}
-	
+
 	private boolean isIndexValid(int index) {
 		if (index > _phrases.size() || index <= 0) {
 			showToUser(MESSAGE_INVALID_INDEX);
 			return false;
-		}		
+		}
 		return true;
 	}
-	
+
 	private void deletePhraseAtIndex(int index) {
 		if (index == -1) {
 			return;
