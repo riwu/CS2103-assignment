@@ -1,15 +1,13 @@
-import java.util.Scanner;
 
 public class Command {
 	private static final String COMMAND_EXIT = "exit";
-	private static final String COMMAND_SAVE = "save";
 	private static final String COMMAND_CLEAR = "clear";
 	private static final String COMMAND_DELETE = "delete";
 	private static final String COMMAND_DISPLAY = "display";
 	private static final String COMMAND_ADD = "add";
 
 	public enum CommandType {
-		ADD, DISPLAY, DELETE, CLEAR, EXIT
+		ADD, DISPLAY, DELETE, CLEAR, EXIT, INVALID
 	};
 
 	private CommandType _commandType;
@@ -61,6 +59,9 @@ public class Command {
 			case COMMAND_EXIT :
 				_commandType = CommandType.EXIT;
 				break;
+
+			default :
+				_commandType = CommandType.INVALID;
 		}
 	}
 

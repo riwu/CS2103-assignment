@@ -29,7 +29,7 @@ public class TextBuddy {
 
 	private static final String MESSAGE_PHRASE_DISPLAY = "%1$s. %2$s\n";
 	private static final String MESSAGE_WELCOME = "Welcome to TextBuddy. %1$s is ready for use\n";
-	private static final String MESSAGE_NO_ARGUMENTS = "No arguments entered\n";
+	private static final String MESSAGE_NO_FILE_SPECIFIED = "No file specified\n";
 
 	private static final String MESSAGE_ENTER_COMMAND = "command: ";
 
@@ -40,6 +40,7 @@ public class TextBuddy {
 
 	private static final String MESSAGE_INVALID_INDEX = "Invalid index\n";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %1$s\n";
+	private static final String MESSAGE_NO_ARGUMENTS = "No arguments entered\n";
 
 	private static final int LIST_NUMBERING_OFFSET = 1;
 	private static final int ERROR_INDEX = -1;
@@ -70,7 +71,7 @@ public class TextBuddy {
 
 	private void exitIfNoArguments(String[] args) {
 		if (args.length == 0) {
-			stopWithErrorMessage(MESSAGE_NO_ARGUMENTS);
+			stopWithErrorMessage(MESSAGE_NO_FILE_SPECIFIED);
 		}
 	}
 
@@ -126,8 +127,11 @@ public class TextBuddy {
 		Command command = new Command(userInput);
 		switch (command.getCommandType()) {
 			case ADD :
-				addPhrase(command.getArguments());
-				updateFile();
+				String arguments = command.getArguments();
+				if (!isArgumentsNull(arguments)) {
+					addPhrase(arguments);
+					updateFile();					
+				}
 				break;
 
 			case DISPLAY :
@@ -135,8 +139,11 @@ public class TextBuddy {
 				break;
 
 			case DELETE :
-				deletePhrase(command.getArguments());
-				updateFile();
+				arguments = command.getArguments();
+				if (!isArgumentsNull(arguments)) {
+    				deletePhrase(arguments);
+    				updateFile();
+				}
 				break;
 
 			case CLEAR :
@@ -148,9 +155,18 @@ public class TextBuddy {
 				System.exit(0);
 				break;
 
-			default :
+			case INVALID :
 				printInvalidCommand(userInput);
+				break;
 		}
+	}
+	
+	private boolean isArgumentsNull(String arguments) {
+		if (arguments == null) {
+			showToUser(MESSAGE_NO_ARGUMENTS);
+			return true;
+		}
+		return false;
 	}
 
 	private void addPhrase(String phrase) {
