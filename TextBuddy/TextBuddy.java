@@ -42,13 +42,6 @@ public class TextBuddy {
 	private static final String MESSAGE_INVALID_INDEX = "Invalid index\n";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %1$s\n";
 
-	private static final String COMMAND_EXIT = "exit";
-	private static final String COMMAND_SAVE = "save";
-	private static final String COMMAND_CLEAR = "clear";
-	private static final String COMMAND_DELETE = "delete";
-	private static final String COMMAND_DISPLAY = "display";
-	private static final String COMMAND_ADD = "add";
-
 	private static final int LIST_NUMBERING_OFFSET = 1;
 
 	private List<String> _phrases = new LinkedList<String>();
@@ -63,7 +56,8 @@ public class TextBuddy {
 	/**
 	 * Check for args, set variables and print welcome message
 	 *
-	 * @param args    args passed to the program
+	 * @param args
+	 *            args passed to the program
 	 */
 	public TextBuddy(String[] args) {
 		exitIfNoArguments(args);
@@ -117,55 +111,42 @@ public class TextBuddy {
 			String userCommand = getNextCommand();
 			executeCommand(userCommand);
 		}
-	}	
+	}
 
 	private String getNextCommand() {
 		showToUser(MESSAGE_ENTER_COMMAND);
 		return getUserInput();
 	}
-	
+
 	private String getUserInput() {
 		return _scanner.nextLine();
 	}
-	
-	private String[] splitCommand(String userInput) {
-		Scanner scanner = new Scanner(userInput + "\n");
-		String[] commands = new String[]{scanner.next(), scanner.nextLine().trim()};
-		scanner.close();
-		return commands;
-	}
 
 	public void executeCommand(String userInput) {
-		String[] commands = splitCommand(userInput);
-		String command = commands[0];
-		String parameters = commands[1];
-		switch (command.toLowerCase()) {
-			case COMMAND_ADD :
-				addPhrase(parameters);
+		Command command = new Command(userInput);
+		switch (command.getCommandType()) {
+			case ADD :
+				addPhrase(command.getArguments());
 				break;
 
-			case COMMAND_DISPLAY :
+			case DISPLAY :
 				displayPhrases();
 				break;
 
-			case COMMAND_DELETE :
-				deletePhrase(parameters);
+			case DELETE :
+				deletePhrase(command.getArguments());
 				break;
 
-			case COMMAND_CLEAR :
+			case CLEAR :
 				clearItems();
 				break;
 
-			case COMMAND_SAVE :
-				saveToFileWithFeedback();
-				break;
-
-			case COMMAND_EXIT :
+			case EXIT :
 				saveToFileAndExit();
 				break;
 
 			default :
-				printInvalidCommand(command);
+				printInvalidCommand(userInput);
 		}
 	}
 
@@ -192,7 +173,7 @@ public class TextBuddy {
 	/**
 	 * Get index to be removed from list from user input
 	 * 
-	 * @return    index of list element to be removed, -1 if invalid index
+	 * @return index of list element to be removed, -1 if invalid index
 	 */
 	private int getIndex(String indexStr) {
 		int index = getUserInputIndex(indexStr);

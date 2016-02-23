@@ -76,16 +76,4 @@ public class TextBuddyTest {
 		testCommand("clear", "all content deleted from mytextfile.txt");
 		testCommand("display", "mytextfile.txt is empty");	
 	}
-	
-	@Test
-	public void testSave() {
-		testCommand("clear", "all content deleted from mytextfile.txt");
-		testCommand("add new 1", "added to mytextfile.txt: \"new 1\"");
-		testCommand("save", "Successfully saved to: mytextfile.txt");
-		testFile("new 1");
-		testCommand("add new moon", "added to mytextfile.txt: \"new moon\"");
-		testCommand("save", "Successfully saved to: mytextfile.txt");
-		testFile("new 1new moon");
-	}
-
 }
