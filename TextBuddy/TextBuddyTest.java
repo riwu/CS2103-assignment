@@ -46,19 +46,41 @@ public class TextBuddyTest {
 	}
 	
 	@Test
-	public void test() {	
+	public void testAdd() {	
 		testCommand("clear", "all content deleted from mytextfile.txt");
 		testCommand("add little brown fox", "added to mytextfile.txt: \"little brown fox\"");
 		testCommand("display", "1. little brown fox");
 		testCommand("add jumped over the moon", "added to mytextfile.txt: \"jumped over the moon\"");
 		testCommand("display", "1. little brown fox\n2. jumped over the moon");
-		testCommand("delete 2", "deleted from mytextfile.txt: \"jumped over the moon\"");
-		testCommand("display", "1. little brown fox");
+
+	}
+	
+	@Test
+	public void testDelete() {
 		testCommand("clear", "all content deleted from mytextfile.txt");
-		testCommand("display", "mytextfile.txt is empty");
-		testCommand("add new 1", "added to mytextfile.txt: \"new 1\"");
+		testCommand("add little brown fox", "added to mytextfile.txt: \"little brown fox\"");
+		testCommand("add jumped over the moon", "added to mytextfile.txt: \"jumped over the moon\"");
+
+		testCommand("delete 2", "deleted from mytextfile.txt: \"jumped over the moon\"");
+		
 		testCommand("delete a", "Invalid index");
 		testCommand("delete 2", "Invalid index");
+		
+		testCommand("display", "1. little brown fox");	
+	}
+	
+	@Test
+	public void testClear() {
+		testCommand("add little brown fox", "added to mytextfile.txt: \"little brown fox\"");
+
+		testCommand("clear", "all content deleted from mytextfile.txt");
+		testCommand("display", "mytextfile.txt is empty");	
+	}
+	
+	@Test
+	public void testSave() {
+		testCommand("clear", "all content deleted from mytextfile.txt");
+		testCommand("add new 1", "added to mytextfile.txt: \"new 1\"");
 		testCommand("save", "Successfully saved to: mytextfile.txt");
 		testFile("new 1");
 		testCommand("add new moon", "added to mytextfile.txt: \"new moon\"");
