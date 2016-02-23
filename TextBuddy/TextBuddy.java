@@ -27,10 +27,15 @@ import java.util.Scanner;
 
 public class TextBuddy {
 
-	private static final String MESSAGE_PHRASE_DISPLAY = "%1$s. %2$s\n";
 	private static final String MESSAGE_WELCOME = "Welcome to TextBuddy. %1$s is ready for use\n";
-	private static final String MESSAGE_NO_FILE_SPECIFIED = "No file specified\n";
 
+	private static final String MESSAGE_ARGUMENT_EMPTY = "No file specified\n";
+	private static final String MESSAGE_ARGUMENT_IS_FOLDER = "Name specified is a folder, not a file\n";
+
+	private static final String INVALID_FILE_CHARACTERS = "\\\\/:*?\"<>|";
+	private static final String MESSAGE_ARGUMENT_INVALID = "File name cannot contain %1$s\n";
+
+	private static final String MESSAGE_PHRASE_DISPLAY = "%1$s. %2$s\n";
 	private static final String MESSAGE_ENTER_COMMAND = "command: ";
 
 	private static final String MESSAGE_PHRASE_ADDED = "added to %1$s: \"%2$s\"\n";
@@ -65,15 +70,20 @@ public class TextBuddy {
 	public TextBuddy(String[] args) {
 		exitIfNoArguments(args);
 		setFileName(args);
-		if (existsFile()) {
+		exitIfFileNameInvalid();
+
+		File file = new File(_fileName);
+		exitIfIsFolder(file);
+		if (existsFile(file)) {
 			getPhrasesFromFile();
 		}
+
 		printWelcomeMessage();
 	}
 
 	private void exitIfNoArguments(String[] args) {
-		if (args.length == 0) {
-			stopWithErrorMessage(MESSAGE_NO_FILE_SPECIFIED);
+		if (args.length == 0 || args[0].length() == 0) {
+			stopWithErrorMessage(MESSAGE_ARGUMENT_EMPTY);
 		}
 	}
 
@@ -81,8 +91,20 @@ public class TextBuddy {
 		_fileName = args[0];
 	}
 
-	private boolean existsFile() {
-		File file = new File(_fileName);
+	private void exitIfFileNameInvalid() {
+		if (_fileName.matches(".*[" + INVALID_FILE_CHARACTERS + "].*")) {
+			stopWithErrorMessage(String.format(MESSAGE_ARGUMENT_INVALID,
+					INVALID_FILE_CHARACTERS.replaceFirst("\\\\", "")));
+		}
+	}
+
+	private void exitIfIsFolder(File file) {
+		if (file.isDirectory()) {
+			stopWithErrorMessage(MESSAGE_ARGUMENT_IS_FOLDER);
+		}
+	}
+
+	private boolean existsFile(File file) {
 		return file.isFile();
 	}
 
