@@ -1,14 +1,16 @@
 
 public class Command {
-	private static final String COMMAND_EXIT = "exit";
-	private static final String COMMAND_CLEAR = "clear";
-	private static final String COMMAND_DELETE = "delete";
-	private static final String COMMAND_DISPLAY = "display";
+
 	private static final String COMMAND_ADD = "add";
+	private static final String COMMAND_DISPLAY = "display";
+	private static final String COMMAND_DELETE = "delete";
+	private static final String COMMAND_CLEAR = "clear";
 	private static final String COMMAND_SORT = "sort";
+	private static final String COMMAND_SEARCH = "search";
+	private static final String COMMAND_EXIT = "exit";
 
 	public enum CommandType {
-		ADD, DISPLAY, DELETE, CLEAR, SORT, EXIT, INVALID
+		ADD, DISPLAY, DELETE, CLEAR, SORT, SEARCH, EXIT, INVALID
 	};
 
 	private CommandType _commandType;
@@ -56,9 +58,13 @@ public class Command {
 			case COMMAND_CLEAR :
 				_commandType = CommandType.CLEAR;
 				break;
-				
+
 			case COMMAND_SORT :
 				_commandType = CommandType.SORT;
+				break;
+
+			case COMMAND_SEARCH :
+				_commandType = CommandType.SEARCH;
 				break;
 
 			case COMMAND_EXIT :

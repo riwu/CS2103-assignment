@@ -38,9 +38,10 @@ public class TextBuddy {
 	private static final String MESSAGE_CONTENT_CLEARED = "all content deleted from %1$s\n";
 	private static final String MESSAGE_CONTENT_EMPTY = "%1$s is empty\n";
 	private static final String MESSAGE_SORTED = "List has been sorted\n";
+	private static final String MESSAGE_SEARCH_NO_RESULT = "Did not find any phrase with the keywords\n";
 
 	private static final String MESSAGE_INVALID_INDEX = "Invalid index\n";
-	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %1$s\n";
+	private static final String MESSAGE_INVALID_COMMAND = "Invalid command\n";
 	private static final String MESSAGE_NO_ARGUMENTS = "No arguments entered\n";
 
 	private static final int LIST_NUMBERING_OFFSET = 1;
@@ -129,9 +130,9 @@ public class TextBuddy {
 		switch (command.getCommandType()) {
 			case ADD :
 				String arguments = command.getArguments();
-				if (!isArgumentsNull(arguments)) {
+				if (!hasArguments(arguments)) {
 					addPhrase(arguments);
-					updateFile();					
+					updateFile();
 				}
 				break;
 
@@ -141,9 +142,9 @@ public class TextBuddy {
 
 			case DELETE :
 				arguments = command.getArguments();
-				if (!isArgumentsNull(arguments)) {
-    				deletePhrase(arguments);
-    				updateFile();
+				if (!hasArguments(arguments)) {
+					deletePhrase(arguments);
+					updateFile();
 				}
 				break;
 
@@ -151,10 +152,17 @@ public class TextBuddy {
 				clearItems();
 				updateFile();
 				break;
-			
+
 			case SORT :
 				sortPhrases();
 				updateFile();
+				break;
+
+			case SEARCH :
+				arguments = command.getArguments();
+				if (!hasArguments(arguments)) {
+					searchWithKeywords(arguments);
+				}
 				break;
 
 			case EXIT :
@@ -162,12 +170,12 @@ public class TextBuddy {
 				break;
 
 			case INVALID :
-				printInvalidCommand(userInput);
+				showToUser(MESSAGE_INVALID_COMMAND);
 				break;
 		}
 	}
 
-	private boolean isArgumentsNull(String arguments) {
+	private boolean hasArguments(String arguments) {
 		if (arguments == null) {
 			showToUser(MESSAGE_NO_ARGUMENTS);
 			return true;
@@ -186,8 +194,12 @@ public class TextBuddy {
 			return;
 		}
 		for (int i = 0; i < _phrases.size(); i++) {
-			showToUser(String.format(MESSAGE_PHRASE_DISPLAY, i + LIST_NUMBERING_OFFSET, _phrases.get(i)));
+			showPhraseToUser(i, _phrases.get(i));
 		}
+	}
+
+	private void showPhraseToUser(int i, String phrase) {
+		showToUser(String.format(MESSAGE_PHRASE_DISPLAY, i + LIST_NUMBERING_OFFSET, phrase));
 	}
 
 	private void deletePhrase(String indexStr) {
@@ -233,8 +245,22 @@ public class TextBuddy {
 	private void sortPhrases() {
 		Collections.sort(_phrases);
 		showToUser(MESSAGE_SORTED);
-	}	
-	
+	}
+
+	private void searchWithKeywords(String keywords) {
+		boolean hasPhrase = false;
+		for (int i = 0; i < _phrases.size(); i++) {
+			String phrase = _phrases.get(i);
+			if (phrase.contains(keywords)) {
+				showPhraseToUser(i, phrase);
+				hasPhrase = true;
+			}
+		}
+		if (!hasPhrase) {
+			showToUser(MESSAGE_SEARCH_NO_RESULT);
+		}
+	}
+
 	private String getCombinedPhrases() {
 		String combinedPhrases = "";
 		for (String phrase : _phrases) {
@@ -264,9 +290,5 @@ public class TextBuddy {
 	private void updateFile() {
 		String combinedPhrases = getCombinedPhrases();
 		writeToFile(combinedPhrases);
-	}
-
-	private void printInvalidCommand(String command) {
-		showToUser(String.format(MESSAGE_INVALID_COMMAND, command));
 	}
 }

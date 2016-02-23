@@ -12,22 +12,22 @@ import org.junit.Test;
 public class TextBuddyTest {
 
 	private static final String FILE_NAME = "mytextfile.txt";
-	
-	private TextBuddy textBuddy = new TextBuddy(new String[]{FILE_NAME});;
+
+	private TextBuddy textBuddy = new TextBuddy(new String[] { FILE_NAME });;
 	ByteArrayOutputStream outContent;
-	
+
 	@Before
 	public void setOutToStream() {
 		outContent = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(outContent));
 	}
-	
+
 	private void testCommand(String input, String expected) {
 		outContent.reset();
 		textBuddy.executeCommand(input);
 		assertEquals(expected + "\n", outContent.toString());
 	}
-	
+
 	private void testFile(String expected) {
 		Scanner scanner = null;
 		String content = "";
@@ -45,39 +45,39 @@ public class TextBuddyTest {
 		}
 		assertEquals(expected, content);
 	}
-	
+
 	@Test
-	public void testAdd() {	
+	public void testAdd() {
 		testCommand("clear", "all content deleted from mytextfile.txt");
-		
+
 		testCommand("add little brown fox", "added to mytextfile.txt: \"little brown fox\"");
 		testCommand("display", "1. little brown fox");
 		testFile("little brown fox\n");
-		
+
 		testCommand("add ", "No arguments entered");
-		
+
 		testCommand("add jumped over the moon", "added to mytextfile.txt: \"jumped over the moon\"");
 		testCommand("display", "1. little brown fox\n2. jumped over the moon");
 		testFile("little brown fox\njumped over the moon\n");
 	}
-	
+
 	@Test
 	public void testDelete() {
 		testCommand("clear", "all content deleted from mytextfile.txt");
-		
+
 		testCommand("add little brown fox", "added to mytextfile.txt: \"little brown fox\"");
 		testCommand("add jumped over the moon", "added to mytextfile.txt: \"jumped over the moon\"");
 
 		testCommand("delete 2", "deleted from mytextfile.txt: \"jumped over the moon\"");
-		
+
 		testCommand("delete a", "Invalid index");
 		testCommand("delete 2", "Invalid index");
 		testCommand("delete", "No arguments entered");
-		
+
 		testCommand("display", "1. little brown fox");
 		testFile("little brown fox\n");
 	}
-	
+
 	@Test
 	public void testClear() {
 		testCommand("add little brown fox", "added to mytextfile.txt: \"little brown fox\"");
@@ -86,17 +86,30 @@ public class TextBuddyTest {
 		testCommand("display", "mytextfile.txt is empty");
 		testFile("");
 	}
-	
+
 	@Test
 	public void testSort() {
 		testCommand("clear", "all content deleted from mytextfile.txt");
-		
+
 		testCommand("add jumped over the moon", "added to mytextfile.txt: \"jumped over the moon\"");
-		testCommand("add a little brown fox", "added to mytextfile.txt: \"a little brown fox\"");		
+		testCommand("add a little brown fox", "added to mytextfile.txt: \"a little brown fox\"");
 		testCommand("display", "1. jumped over the moon\n2. a little brown fox");
-		
+
 		testCommand("sort", "List has been sorted");
 		testCommand("display", "1. a little brown fox\n2. jumped over the moon");
-		testFile("a little brown fox\njumped over the moon\n");		
+		testFile("a little brown fox\njumped over the moon\n");
+	}
+
+	@Test
+	public void testSearch() {
+		testCommand("clear", "all content deleted from mytextfile.txt");
+
+		testCommand("add jumped over the moon", "added to mytextfile.txt: \"jumped over the moon\"");
+		testCommand("add a little brown fox", "added to mytextfile.txt: \"a little brown fox\"");
+		testCommand("add jumped over the sun", "added to mytextfile.txt: \"jumped over the sun\"");
+
+		testCommand("search the moon", "1. jumped over the moon");
+		testCommand("search jump", "1. jumped over the moon\n3. jumped over the sun");
+		testCommand("search jumb", "Did not find any phrase with the keywords");
 	}
 }
