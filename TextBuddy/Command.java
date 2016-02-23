@@ -5,9 +5,10 @@ public class Command {
 	private static final String COMMAND_DELETE = "delete";
 	private static final String COMMAND_DISPLAY = "display";
 	private static final String COMMAND_ADD = "add";
+	private static final String COMMAND_SORT = "sort";
 
 	public enum CommandType {
-		ADD, DISPLAY, DELETE, CLEAR, EXIT, INVALID
+		ADD, DISPLAY, DELETE, CLEAR, SORT, EXIT, INVALID
 	};
 
 	private CommandType _commandType;
@@ -54,6 +55,10 @@ public class Command {
 
 			case COMMAND_CLEAR :
 				_commandType = CommandType.CLEAR;
+				break;
+				
+			case COMMAND_SORT :
+				_commandType = CommandType.SORT;
 				break;
 
 			case COMMAND_EXIT :

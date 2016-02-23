@@ -86,4 +86,17 @@ public class TextBuddyTest {
 		testCommand("display", "mytextfile.txt is empty");
 		testFile("");
 	}
+	
+	@Test
+	public void testSort() {
+		testCommand("clear", "all content deleted from mytextfile.txt");
+		
+		testCommand("add jumped over the moon", "added to mytextfile.txt: \"jumped over the moon\"");
+		testCommand("add a little brown fox", "added to mytextfile.txt: \"a little brown fox\"");		
+		testCommand("display", "1. jumped over the moon\n2. a little brown fox");
+		
+		testCommand("sort", "List has been sorted");
+		testCommand("display", "1. a little brown fox\n2. jumped over the moon");
+		testFile("a little brown fox\njumped over the moon\n");		
+	}
 }

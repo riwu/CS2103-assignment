@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -37,6 +37,7 @@ public class TextBuddy {
 	private static final String MESSAGE_PHRASE_DELETED = "deleted from %1$s: \"%2$s\"\n";
 	private static final String MESSAGE_CONTENT_CLEARED = "all content deleted from %1$s\n";
 	private static final String MESSAGE_CONTENT_EMPTY = "%1$s is empty\n";
+	private static final String MESSAGE_SORTED = "List has been sorted\n";
 
 	private static final String MESSAGE_INVALID_INDEX = "Invalid index\n";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %1$s\n";
@@ -150,6 +151,11 @@ public class TextBuddy {
 				clearItems();
 				updateFile();
 				break;
+			
+			case SORT :
+				sortPhrases();
+				updateFile();
+				break;
 
 			case EXIT :
 				System.exit(0);
@@ -160,7 +166,7 @@ public class TextBuddy {
 				break;
 		}
 	}
-	
+
 	private boolean isArgumentsNull(String arguments) {
 		if (arguments == null) {
 			showToUser(MESSAGE_NO_ARGUMENTS);
@@ -224,6 +230,11 @@ public class TextBuddy {
 		showToUser(String.format(MESSAGE_CONTENT_CLEARED, _fileName));
 	}
 
+	private void sortPhrases() {
+		Collections.sort(_phrases);
+		showToUser(MESSAGE_SORTED);
+	}	
+	
 	private String getCombinedPhrases() {
 		String combinedPhrases = "";
 		for (String phrase : _phrases) {
