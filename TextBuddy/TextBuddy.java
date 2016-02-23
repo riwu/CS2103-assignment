@@ -37,12 +37,12 @@ public class TextBuddy {
 	private static final String MESSAGE_PHRASE_DELETED = "deleted from %1$s: \"%2$s\"\n";
 	private static final String MESSAGE_CONTENT_CLEARED = "all content deleted from %1$s\n";
 	private static final String MESSAGE_CONTENT_EMPTY = "%1$s is empty\n";
-	private static final String MESSAGE_SAVED_TO_FILE = "Successfully saved to: %1$s\n";
 
 	private static final String MESSAGE_INVALID_INDEX = "Invalid index\n";
 	private static final String MESSAGE_INVALID_COMMAND = "Invalid command: %1$s\n";
 
 	private static final int LIST_NUMBERING_OFFSET = 1;
+	private static final int ERROR_INDEX = -1;
 
 	private List<String> _phrases = new LinkedList<String>();
 	private String _fileName;
@@ -127,6 +127,7 @@ public class TextBuddy {
 		switch (command.getCommandType()) {
 			case ADD :
 				addPhrase(command.getArguments());
+				updateFile();
 				break;
 
 			case DISPLAY :
@@ -135,14 +136,16 @@ public class TextBuddy {
 
 			case DELETE :
 				deletePhrase(command.getArguments());
+				updateFile();
 				break;
 
 			case CLEAR :
 				clearItems();
+				updateFile();
 				break;
 
 			case EXIT :
-				saveToFileAndExit();
+				System.exit(0);
 				break;
 
 			default :
@@ -177,11 +180,11 @@ public class TextBuddy {
 	 */
 	private int getIndex(String indexStr) {
 		int index = getUserInputIndex(indexStr);
-		return (isIndexValid(index)) ? (index - LIST_NUMBERING_OFFSET) : -1;
+		return (isIndexValid(index)) ? (index - LIST_NUMBERING_OFFSET) : ERROR_INDEX;
 	}
 
 	private int getUserInputIndex(String indexStr) {
-		return (indexStr.matches("\\d")) ? Integer.parseInt(indexStr) : -1;
+		return (indexStr.matches("\\d")) ? Integer.parseInt(indexStr) : ERROR_INDEX;
 	}
 
 	private boolean isIndexValid(int index) {
@@ -193,7 +196,7 @@ public class TextBuddy {
 	}
 
 	private void deletePhraseAtIndex(int index) {
-		if (index == -1) {
+		if (index == ERROR_INDEX) {
 			return;
 		}
 		String deletedPhrase = _phrases.remove(index);
@@ -213,15 +216,13 @@ public class TextBuddy {
 		return combinedPhrases;
 	}
 
-	private boolean writeToFile(String combinedPhrases) {
+	private void writeToFile(String content) {
 		FileWriter file = null;
 		try {
 			file = new FileWriter(_fileName);
-			file.write(combinedPhrases);
-			return true;
+			file.write(content);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
 		} finally {
 			if (file != null) {
 				try {
@@ -233,20 +234,9 @@ public class TextBuddy {
 		}
 	}
 
-	private boolean saveToFile() {
+	private void updateFile() {
 		String combinedPhrases = getCombinedPhrases();
-		return writeToFile(combinedPhrases);
-	}
-
-	private void saveToFileWithFeedback() {
-		if (saveToFile()) {
-			showToUser(String.format(MESSAGE_SAVED_TO_FILE, _fileName));
-		}
-	}
-
-	private void saveToFileAndExit() {
-		saveToFile();
-		System.exit(0);
+		writeToFile(combinedPhrases);
 	}
 
 	private void printInvalidCommand(String command) {
