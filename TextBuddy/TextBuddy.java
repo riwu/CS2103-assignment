@@ -1,14 +1,13 @@
 
 /**
  * This class manipulates text in a file. 
- * Extra command: save -- saves to content to file.
  * 
  * Assumptions: 
  * File passed to program must be readable and writable.
  * Existing text will be retrieved from file at start.
  * Will attempt to create file if does not exist initially.
- * Order of string is based on order in which it is stored.
- * Text will be written to file only upon "save" or "exit" command.
+ * Initial order of string is based on order in which it is stored.
+ * File will be updated after every command.
  * 
  * @author WANG RIWU
  */
